@@ -1,16 +1,15 @@
-class iohandler:
+class IOhandler:
+    filename = ''
 
     def __init__(self):
         pass
 
-    def open_file(self):
+    def get_apikey(self):
+        file = open('Settings/Config.txt')
+
+
+    def get_weather(self, day):
         pass
 
-    def close_file(self):
-        pass
-
-    def write_data(self):
-        pass
-
-    def read_data(self):
+    def update_weather(self, today):
         pass
