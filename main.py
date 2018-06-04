@@ -1,19 +1,24 @@
 import sys
-import api, iohandler
+import parser, iohandler
+
+# weather page url
+url = 'https://yandex.ru/pogoda/moscow'
 
 # initialize different components of the script globally
 filehandler = iohandler.IOhandler()
-yandex_api = api.Api(filehandler)
+yandex_scraper = parser.Yandex_Parser(filehandler, url)
 
 
 # get the difference between today and the given day
 def find_difference(day):
 
     # get figures for comparison
-    today = 20#yandex_api.get_weather()
-    other = 21 #filehandler.get_weather(day)
+    today = yandex_scraper.get_weather()
+    other = filehandler.get_weather(day)
 
     #find the percentage difference between the days
+    print(str(today))
+    print(str(other))
     difference = ((today - other) /((today + other) / 2)) * 100
 
     return difference
@@ -21,7 +26,7 @@ def find_difference(day):
 # update the data in the data textfile
 def update():
     print('update')
-    today = yandex_api.get_weather()
+    today = yandex_scraper.get_weather()
     filehandler.update_weather(today)
 
 # find the difference between today and the given day
@@ -32,13 +37,14 @@ def find(day):
         sys.exit(-2)
 
     output = "Сегоднящная погода отличается от предсказанной " + str(day) + " день/дня/дней назад на " \
-             + str(find_difference(day)) + "%"
+             + str(find_difference(day - 1)) + "%"
 
     return output
 
 def main():
 
     print('hello')
+    #filehandler.get_apikey()
     # update data
     if sys.argv[1] == 'update':
         update()
