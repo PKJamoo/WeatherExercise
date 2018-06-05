@@ -6,10 +6,11 @@ url = 'https://yandex.ru/pogoda/moscow'
 
 # initialize different components of the script globally
 filehandler = iohandler.IOhandler()
-yandex_scraper = parser.Yandex_Parser(filehandler, url)
+yandex_scraper = parser.Yandex_Parser(url)
 
 
 # get the difference between today and the given day
+# Integer (# of days ago) --> Integer (% difference)
 def find_difference(day):
 
     # get figures for comparison
@@ -23,13 +24,14 @@ def find_difference(day):
 
     return difference
 
-# update the data in the data textfile
+# Get current weather from yandex webpage. Write that weather into the data file.
+# ~ -> ~
 def update():
-    print('update')
     today = yandex_scraper.get_weather()
     filehandler.update_weather(today)
 
 # find the difference between today and the given day
+# Integer (# of days ago) --> String (Target String for displaying difference)
 def find(day):
     print('find')
     if (day < 1 or day > 7):
@@ -43,16 +45,12 @@ def find(day):
 
 def main():
 
-    print('hello')
-    #filehandler.get_apikey()
-    # update data
+    # update data command
     if sys.argv[1] == 'update':
         update()
-    # otherwise check the difference between the current day and the requested day
-
-        # find difference
+    # find difference command
     elif sys.argv[1] == 'find':
-        # error checking
+        # invalid number of arguments
         if not len(sys.argv) == 3:
             print("Invalid Number of Arguments: " + str(len(sys.argv)) + " Please Specify Day")
             sys.exit(-1)
@@ -62,7 +60,8 @@ def main():
             find(int(sys.argv[2])))
 
     else:
-        print("Invalid Command: Only update and find accepted")
+        # invalid command line arguments
+        print("Invalid Command: Only update and find commands accepted")
         sys.exit(-1)
     # exit script
     sys.exit(0)

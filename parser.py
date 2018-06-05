@@ -2,14 +2,14 @@ import urllib.request
 from html.parser import HTMLParser
 
 
+
 class Yandex_Parser(HTMLParser):
 
 
-    def __init__(self, IOhandler, url):
+    def __init__(self, url):
         # call to super
         HTMLParser.__init__(self)
         # class variables
-        self.filehandler = IOhandler
         self.url = url
         self.nesting_tags = 0
         self.data = []
@@ -44,13 +44,15 @@ class Yandex_Parser(HTMLParser):
 
 # -----------------------------------------------------------
 
+    # Find the current temperature on Yandex.weather/Moscow and return it.
+    # ~  ---> Integer (current temperature)
     def get_weather(self):
         # get webpage html
         http_response = urllib.request.urlopen(self.url)
         http_response.info()
         html = http_response.read()
 
-        # parse with html
+        # parse with htmlParser methods
         self.feed(str(html))
 
         # return current temperature
