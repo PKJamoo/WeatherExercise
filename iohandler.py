@@ -14,7 +14,6 @@ class IOHandler:
         self.file_name = ''
         self.temperatures = []
         self.current_date = date
-        #print(self.current_date)
 
     def get_most_recent_entry(self):
         with open('data') as file:

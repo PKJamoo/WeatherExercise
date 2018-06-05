@@ -42,8 +42,6 @@ class YandexParser(HTMLParser):
         if self.nesting_tags:
             self.data.append(data)
 
-# -----------------------------------------------------------
-
     # Find the current temperature on Yandex.weather/Moscow and return it.
     # ~  ---> Integer (current temperature)
     def get_weather(self):

@@ -27,8 +27,6 @@ def find_difference(day):
     other = file_handler.get_weather(day)
 
     #find the percentage difference between the days
-    #print(str(today))
-    #print(str(other))
     difference = ((float(today) - other) /((today + other) / 2)) * 100
 
     return difference
