@@ -3,7 +3,7 @@ from html.parser import HTMLParser
 
 
 
-class Yandex_Parser(HTMLParser):
+class YandexParser(HTMLParser):
 
 
     def __init__(self, url):

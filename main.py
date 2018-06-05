@@ -1,12 +1,14 @@
 import sys
 import parser, iohandler
+import datetime
 
 # weather page url
 url = 'https://yandex.ru/pogoda/moscow'
+current_date = datetime.datetime.now().strftime("%d-%m-%Y")
 
 # initialize different components of the script globally
-filehandler = iohandler.IOhandler()
-yandex_scraper = parser.Yandex_Parser(url)
+file_handler = iohandler.IOHandler(current_date)
+yandex_scraper = parser.YandexParser(url)
 
 
 # get the difference between today and the given day
@@ -14,8 +16,15 @@ yandex_scraper = parser.Yandex_Parser(url)
 def find_difference(day):
 
     # get figures for comparison
-    today = yandex_scraper.get_weather()
-    other = filehandler.get_weather(day)
+    # check data first, if not updated go to yandex
+    if file_handler.get_most_recent_entry() == current_date:
+        today = file_handler.get_weather(0)
+    else:
+        today = yandex_scraper.get_weather()
+        # update data too
+        file_handler.update_weather(today)
+
+    other = file_handler.get_weather(day)
 
     #find the percentage difference between the days
     print(str(today))
@@ -25,10 +34,12 @@ def find_difference(day):
     return difference
 
 # Get current weather from yandex webpage. Write that weather into the data file.
+# will only update if it wasn't updated today
 # ~ -> ~
 def update():
-    today = yandex_scraper.get_weather()
-    filehandler.update_weather(today)
+    if not file_handler.get_most_recent_entry() == current_date:
+        today = yandex_scraper.get_weather()
+        file_handler.update_weather(today)
 
 # find the difference between today and the given day
 # Integer (# of days ago) --> String (Target String for displaying difference)
@@ -39,7 +50,7 @@ def find(day):
         sys.exit(-2)
 
     output = "Сегоднящная погода отличается от предсказанной " + str(day) + " день/дня/дней назад на " \
-             + str(find_difference(day - 1)) + "%"
+             + str(find_difference(day)) + "%"
 
     return output
 
@@ -56,8 +67,7 @@ def main():
             sys.exit(-1)
 
         # print results
-        print(
-            find(int(sys.argv[2])))
+        print(find(int(sys.argv[2])))
 
     else:
         # invalid command line arguments
