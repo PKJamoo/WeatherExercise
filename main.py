@@ -27,15 +27,14 @@ def find_difference(day):
     other = file_handler.get_weather(day)
 
     #find the percentage difference between the days
-    print(str(today))
-    print(str(other))
-    difference = ((today - other) /((today + other) / 2)) * 100
+    #print(str(today))
+    #print(str(other))
+    difference = ((float(today) - other) /((today + other) / 2)) * 100
 
     return difference
 
 # Get current weather from yandex webpage. Write that weather into the data file.
 # will only update if it wasn't updated today
-# ~ -> ~
 def update():
     if not file_handler.get_most_recent_entry() == current_date:
         today = yandex_scraper.get_weather()

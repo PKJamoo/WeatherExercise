@@ -39,12 +39,9 @@ class IOHandler:
 
     def update_weather(self, today):
 
-        # read existing lines and close file
-        with open('data', 'r') as file:
+        # read existing lines, write new lines, delete lines older than 7 days
+        with open('data', 'r+') as file:
             lines = file.readlines()
-
-        with open('data', 'w') as file:
+            file.seek(0)
             file.writelines([str(today) + ' ' +  self.current_date + '\n', ] + lines[:8])
-            #print(lines)
-
-
+            file.truncate()
